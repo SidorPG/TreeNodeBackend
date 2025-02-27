@@ -1,0 +1,14 @@
+F:\src\sidorpg\TestTask\Data\bin\Release\net6.0\Data.deps.json
+F:\src\sidorpg\TestTask\Data\bin\Release\net6.0\Data.runtimeconfig.json
+F:\src\sidorpg\TestTask\Data\bin\Release\net6.0\Data.dll
+F:\src\sidorpg\TestTask\Data\bin\Release\net6.0\Data.pdb
+F:\src\sidorpg\TestTask\Data\obj\Release\net6.0\Data.csproj.AssemblyReference.cache
+F:\src\sidorpg\TestTask\Data\obj\Release\net6.0\Data.GeneratedMSBuildEditorConfig.editorconfig
+F:\src\sidorpg\TestTask\Data\obj\Release\net6.0\Data.AssemblyInfoInputs.cache
+F:\src\sidorpg\TestTask\Data\obj\Release\net6.0\Data.AssemblyInfo.cs
+F:\src\sidorpg\TestTask\Data\obj\Release\net6.0\Data.csproj.CoreCompileInputs.cache
+F:\src\sidorpg\TestTask\Data\obj\Release\net6.0\Data.dll
+F:\src\sidorpg\TestTask\Data\obj\Release\net6.0\refint\Data.dll
+F:\src\sidorpg\TestTask\Data\obj\Release\net6.0\Data.pdb
+F:\src\sidorpg\TestTask\Data\obj\Release\net6.0\Data.genruntimeconfig.cache
+F:\src\sidorpg\TestTask\Data\obj\Release\net6.0\ref\Data.dll

@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Api</name>
+    </assembly>
+    <members>
+        <member name="T:Data.Controllers.UserJournalController">
+            <summary>
+            Represents journal API
+            </summary>
+        </member>
+        <member name="M:Data.Controllers.UserJournalController.GetRange(Api.Models.UserJournal.UserJournalQueryStringParameters,Api.Models.UserJournal.UserJournalBodyParameters)">
+            <remarks>
+            Provides the pagination API. Skip means the number of items should be skipped by server. Take means the maximum number items should be returned by server. All fields of the filter are optional.
+            </remarks>
+        </member>
+        <member name="M:Data.Controllers.UserJournalController.getSingle(Api.Models.UserJournal.UserJournalGetSingleQueryStringParameters)">
+            <remarks>
+            Returns the information about an particular event by ID.
+            </remarks>
+        </member>
+        <member name="T:Data.Controllers.UserTreeController">
+            <summary>
+            Represents entire tree API
+            </summary>
+        </member>
+        <member name="M:Data.Controllers.UserTreeController.get(Api.Models.Tree.TreeQueryStringParameters)">
+            <remarks>
+            Returns your entire tree. If your tree doesn't exist it will be created automatically.
+            </remarks>
+        </member>
+        <member name="T:Data.Controllers.UserTreeNodeController">
+            <summary>
+            Represents tree node API
+            </summary>
+        </member>
+        <member name="M:Data.Controllers.UserTreeNodeController.CreateAsync(Api.Models.TreeNode.TreeNodeCreateQueryStringParameters)">
+            <remarks>
+            Returns your entire tree. If your tree doesn't exist it will be created automatically.
+            </remarks>
+        </member>
+        <member name="M:Data.Controllers.UserTreeNodeController.DeleteAsync(Api.Models.TreeNode.TreeNodeDeleteQueryStringParameters)">
+            <remarks>
+            Delete an existing node in your tree. You must specify a node ID that belongs your tree.
+            </remarks>
+        </member>
+        <member name="M:Data.Controllers.UserTreeNodeController.RenameAsync(Api.Models.TreeNode.TreeNodeRenameQueryStringParameters)">
+            <remarks>
+            Rename an existing node in your tree. You must specify a node ID that belongs your tree. A new name of the node must be unique across all siblings.
+            </remarks>
+        </member>
+        <member name="F:Api.Logger.DbLogger._dbLoggerProvider">
+            <summary>  
+            Instance of <see cref="T:Api.Logger.DbLoggerProvider" />.  
+            </summary>  
+        </member>
+        <member name="M:Api.Logger.DbLogger.#ctor(Api.Logger.DbLoggerProvider)">
+            <summary>  
+            Creates a new instance of <see cref="!:FileLogger" />.  
+            </summary>  
+            <param name="fileLoggerProvider">Instance of <see cref="!:FileLoggerProvider" />.</param>  
+        </member>
+        <member name="M:Api.Logger.DbLogger.IsEnabled(Microsoft.Extensions.Logging.LogLevel)">
+            <summary>  
+            Whether to log the entry.  
+            </summary>  
+            <param name="logLevel"></param>  
+            <returns></returns>  
+        </member>
+        <member name="M:Api.Logger.DbLogger.Log``1(Microsoft.Extensions.Logging.LogLevel,Microsoft.Extensions.Logging.EventId,``0,System.Exception,System.Func{``0,System.Exception,System.String})">
+            <summary>  
+            Used to log the entry.  
+            </summary>  
+            <typeparam name="TState"></typeparam>  
+            <param name="logLevel">An instance of <see cref="T:Microsoft.Extensions.Logging.LogLevel"/>.</param>  
+            <param name="eventId">The event's ID. An instance of <see cref="T:Microsoft.Extensions.Logging.EventId"/>.</param>  
+            <param name="state">The event's state.</param>  
+            <param name="exception">The event's exception. An instance of <see cref="T:System.Exception" /></param>  
+            <param name="formatter">A delegate that formats </param>  
+        </member>
+    </members>
+</doc>
