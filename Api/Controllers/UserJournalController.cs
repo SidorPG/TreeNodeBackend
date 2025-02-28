@@ -13,12 +13,10 @@ namespace Data.Controllers
     [Route("api.user.journal")]
     public class UserJournalController : ControllerBase
     {
-        private readonly ILogger _logger;
         private readonly ApplicationDbContext _dbContext;
 
-        public UserJournalController(ILoggerProvider loggerProvider, ApplicationDbContext dbContext)
+        public UserJournalController(ApplicationDbContext dbContext)
         {
-            _logger = loggerProvider.CreateLogger("JournalMessageController") ?? throw new ArgumentNullException(nameof(loggerProvider));
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
@@ -27,12 +25,12 @@ namespace Data.Controllers
         /// </remarks>
         [Route("/api.user.journal.getRange")]
         [HttpPost]
-        public IActionResult GetRange([FromQuery] UserJournalQueryStringParameters qargs, [FromBody] UserJournalBodyParameters bargs)
+        public PagedList<MJournal> GetRange([FromQuery] UserJournalQueryStringParameters qargs, [FromBody] UserJournalBodyParameters bargs)
         {
             if (qargs.skip < 0)
-                throw new SecureException("skip can't be lower then 0");
+                throw new SecureException(UserJournalErrors.SkipOnlyPositive);
             if (qargs.take < 0)
-                throw new SecureException("take can't be lower then 0");
+                throw new SecureException(UserJournalErrors.TakeOnlyPositive);
 
             var dtos = _dbContext.JournalMessages.Include(x => x.JournalEvent).AsNoTracking().AsQueryable();
 
@@ -49,27 +47,26 @@ namespace Data.Controllers
                 })
                 .OrderByDescending(x => x.CreatedAt);
 
-            var docs = PagedList<MJournal>.ToPagedList(source, qargs.skip, qargs.take);
+            PagedList<MJournal> docs = PagedList<MJournal>.ToPagedList(source, qargs.skip, qargs.take);
 
-            return Ok(docs);
-
+            return docs;
         }
 
         /// <remarks>
         /// Returns the information about an particular event by ID.
         /// </remarks>
         [HttpPost("/api.user.journal.getSingle")]
-        public async Task<IActionResult> getSingle([FromQuery] UserJournalGetSingleQueryStringParameters qargs)
+        public async Task<MJournalInfo> getSingle([FromQuery] UserJournalGetSingleQueryStringParameters qargs)
         {
             var doc = await _dbContext.JournalMessages.Include(x => x.JournalEvent).FirstOrDefaultAsync(x => x.Id == qargs.id);
-            if (doc == null) throw new SecureException("Journal Message not found");
-            return Ok(new MJournalInfo()
+            if (doc == null) throw new SecureException(UserJournalErrors.MessageNotFound);
+            return new MJournalInfo()
             {
                 Id = doc.Id,
                 CreatedAt = doc.JournalEvent.Created,
                 EventId = doc.EventId,
                 Text = doc.Data,
-            });
+            };
         }
     }
 }

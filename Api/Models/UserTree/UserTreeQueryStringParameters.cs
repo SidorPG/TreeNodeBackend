@@ -2,7 +2,7 @@
 
 namespace Api.Models.UserTree;
 
-public class TreeQueryStringParameters
+public class UserTreeQueryStringParameters
 {
     [Required]
     public string treeName { get; set; }
