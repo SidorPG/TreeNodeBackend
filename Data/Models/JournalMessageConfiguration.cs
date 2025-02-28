@@ -14,6 +14,9 @@ public class JournalMessageConfiguration : IEntityTypeConfiguration<journal_mess
         builder.Property(x => x.EventId).HasColumnName("event_id");
         builder.Property(x => x.Type).HasColumnName("type");
         builder.Property(x => x.Data).HasColumnName("data");
-        builder.Property(x => x.Created).HasColumnName("created");
+
+        builder.HasOne(x => x.JournalEvent)
+            .WithOne(x => x.Message)
+            .HasForeignKey<journal_message>(x => x.EventId);
     }
 }

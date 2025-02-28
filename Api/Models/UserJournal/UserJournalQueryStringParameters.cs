@@ -2,7 +2,7 @@
 
 namespace Api.Models.UserJournal;
 
-public class UserJournalQueryStringParameters : IParameters
+public class UserJournalQueryStringParameters
 {
     [Required]
     public int skip { get; set; }

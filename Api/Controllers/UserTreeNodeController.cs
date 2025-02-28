@@ -1,4 +1,4 @@
-using Api.Models;
+using Api.Exceptions;
 using Api.Models.TreeNode;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,10 +29,10 @@ namespace Data.Controllers
         {
             var tree = await _dbContext.TreeNodes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == args.parentNodeId && x.TreeName == args.treeName);
             if (tree == null)
-                throw new SecureException("Parent node dosn't exist", queryParameters: args.ToString());
+                throw new SecureException("Parent node dosn't exist");
             var node = await _dbContext.TreeNodes.AsNoTracking().FirstOrDefaultAsync(x => x.ParentNodeId == args.parentNodeId && x.TreeName == args.treeName && x.Name == args.nodeName);
             if (node != null)
-                throw new SecureException("Node alredy exist", queryParameters: args.ToString());
+                throw new SecureException("Node alredy exist");
 
             node = new tree_node()
             {
@@ -54,11 +54,11 @@ namespace Data.Controllers
         {
             var anyNodeChild = _dbContext.TreeNodes.AsNoTracking().Any(x => x.ParentNodeId == args.nodeId && x.TreeName == args.treeName);
             if (anyNodeChild)
-                throw new SecureException("You have to delete all children nodes first", queryParameters: args.ToString());
+                throw new SecureException("You have to delete all children nodes first");
 
             var node = await _dbContext.TreeNodes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == args.nodeId && x.TreeName == args.treeName);
             if (node != null)
-                throw new SecureException("Tree dosn't exist", queryParameters: args.ToString());
+                throw new SecureException("Tree dosn't exist");
 
             _dbContext.TreeNodes.Remove(node);
             await _dbContext.SaveChangesAsync();
@@ -74,7 +74,7 @@ namespace Data.Controllers
         {
             var node = await _dbContext.TreeNodes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == args.nodeId && x.Name == args.treeName);
             if (node != null)
-                throw new SecureException("Tree dosn't exist", args.ToString());
+                throw new SecureException("Tree dosn't exist");
             node.Name = args.newNodeName;
             _dbContext.TreeNodes.Update(node);
             await _dbContext.SaveChangesAsync();

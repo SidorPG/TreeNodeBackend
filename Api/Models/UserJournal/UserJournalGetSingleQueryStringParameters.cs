@@ -2,7 +2,7 @@
 
 namespace Api.Models.UserJournal;
 
-public class UserJournalGetSingleQueryStringParameters : IParameters
+public class UserJournalGetSingleQueryStringParameters
 {
     [Required]
     public int id { get; set; }
