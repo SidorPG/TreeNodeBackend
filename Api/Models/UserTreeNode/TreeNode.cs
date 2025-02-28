@@ -1,4 +1,4 @@
-﻿namespace Api.Models.Tree;
+﻿namespace Api.Models.UserTreeNode;
 
 public class TreeNode
 {

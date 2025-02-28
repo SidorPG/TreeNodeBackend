@@ -1,4 +1,4 @@
-using Api.Models.Tree;
+using Api.Models.UserTree;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

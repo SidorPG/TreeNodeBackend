@@ -1,5 +1,5 @@
 using Api.Exceptions;
-using Api.Models.TreeNode;
+using Api.Models.UserTreeNode;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

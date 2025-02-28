@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Api.Models.Tree;
+namespace Api.Models.UserTree;
 
 public class TreeQueryStringParameters
 {

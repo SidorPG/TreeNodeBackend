@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Api.Models.TreeNode;
+namespace Api.Models.UserTreeNode;
 
 public class TreeNodeRenameQueryStringParameters
 {
