@@ -58,7 +58,7 @@ namespace Data.Controllers
                 throw new SecureException(UserTreeNodeErrors.ChildNodesShouldBeDeletedFirst);
 
             var node = await _dbContext.TreeNodes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == args.nodeId && x.TreeName == args.treeName);
-            if (node != null)
+            if (node == null)
                 throw new SecureException(UserTreeNodeErrors.TreeNodeNotFound);
 
             _dbContext.TreeNodes.Remove(node);
@@ -74,7 +74,7 @@ namespace Data.Controllers
         public async Task<IActionResult> RenameAsync([FromQuery] UserTreeNodeRenameQueryStringParameters args)
         {
             var node = await _dbContext.TreeNodes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == args.nodeId && x.TreeName == args.treeName);
-            if (node != null)
+            if (node == null)
                 throw new SecureException(UserTreeNodeErrors.TreeNodeNotFound);
             node.Name = args.newNodeName;
             _dbContext.TreeNodes.Update(node);
