@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Api.Models.TreeNode;
 
-public class TreeNodeCreateQueryStringParameters : IParameters
+public class TreeNodeCreateQueryStringParameters
 {
     [Required]
     public string treeName { get; set; }

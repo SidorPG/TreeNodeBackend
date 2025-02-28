@@ -2,7 +2,7 @@
 
 namespace Api.Models.UserJournal;
 
-public class UserJournalBodyParameters : IParameters
+public class UserJournalBodyParameters
 {
     [Required]
     public JournalBodyParameters filter { get; set; }

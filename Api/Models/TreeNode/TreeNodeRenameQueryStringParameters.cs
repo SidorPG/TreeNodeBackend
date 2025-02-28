@@ -2,7 +2,7 @@
 
 namespace Api.Models.TreeNode;
 
-public class TreeNodeRenameQueryStringParameters : IParameters
+public class TreeNodeRenameQueryStringParameters
 {
     [Required]
     public string treeName { get; set; }

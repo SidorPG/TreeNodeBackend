@@ -6,5 +6,5 @@ public class journal_message
     public int Id { get; set; }
     public int EventId { get; set; }
     public string Data { get; set; }
-    public DateTime Created { get; set; }
+    public virtual journal_event JournalEvent { get; set; }
 }

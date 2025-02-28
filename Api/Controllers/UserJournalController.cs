@@ -1,3 +1,4 @@
+using Api.Exceptions;
 using Api.Models;
 using Api.Models.UserJournal;
 using Microsoft.AspNetCore.Mvc;
@@ -28,27 +29,25 @@ namespace Data.Controllers
         [HttpPost]
         public IActionResult GetRange([FromQuery] UserJournalQueryStringParameters qargs, [FromBody] UserJournalBodyParameters bargs)
         {
-
-            if (qargs.take < 0)
-                throw new SecureException("take can't be lower then 0", qargs.ToString(), bargs.ToString());
-
             if (qargs.skip < 0)
-                throw new SecureException("skip can't be lower then 0", qargs.ToString(), bargs.ToString());
+                throw new SecureException("skip can't be lower then 0");
+            if (qargs.take < 0)
+                throw new SecureException("take can't be lower then 0");
 
-            var dtos = _dbContext.JournalMessages.AsNoTracking().AsQueryable();
+            var dtos = _dbContext.JournalMessages.Include(x => x.JournalEvent).AsNoTracking().AsQueryable();
 
             IQueryable<MJournal> source = dtos
                 .Where(x =>
-                    (x.Created > bargs.filter.from || x.Created <= bargs.filter.to) &&
+                    (x.JournalEvent.Created > bargs.filter.from || x.JournalEvent.Created <= bargs.filter.to) &&
                     x.Data.ToLower().Contains(bargs.filter.SearchText.ToLower())
                 )
                 .Select(x => new MJournal()
                 {
                     Id = x.Id,
-                    CreatedAt = x.Created,
+                    CreatedAt = x.JournalEvent.Created,
                     EventId = x.EventId,
                 })
-                .OrderBy(x => x.CreatedAt);
+                .OrderByDescending(x => x.CreatedAt);
 
             var docs = PagedList<MJournal>.ToPagedList(source, qargs.skip, qargs.take);
 
@@ -62,12 +61,12 @@ namespace Data.Controllers
         [HttpPost("/api.user.journal.getSingle")]
         public async Task<IActionResult> getSingle([FromQuery] UserJournalGetSingleQueryStringParameters qargs)
         {
-            var doc = await _dbContext.JournalMessages.FindAsync(qargs.id);
-            if (doc == null) throw new SecureException("Journal Message not found", queryParameters: qargs.ToString());
+            var doc = await _dbContext.JournalMessages.Include(x => x.JournalEvent).FirstOrDefaultAsync(x => x.Id == qargs.id);
+            if (doc == null) throw new SecureException("Journal Message not found");
             return Ok(new MJournalInfo()
             {
                 Id = doc.Id,
-                CreatedAt = doc.Created,
+                CreatedAt = doc.JournalEvent.Created,
                 EventId = doc.EventId,
                 Text = doc.Data,
             });

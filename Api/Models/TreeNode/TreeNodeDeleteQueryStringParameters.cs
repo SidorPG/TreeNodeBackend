@@ -2,7 +2,7 @@
 
 namespace Api.Models.TreeNode;
 
-public class TreeNodeDeleteQueryStringParameters : IParameters
+public class TreeNodeDeleteQueryStringParameters
 {
     [Required]
     public string treeName { get; set; }
