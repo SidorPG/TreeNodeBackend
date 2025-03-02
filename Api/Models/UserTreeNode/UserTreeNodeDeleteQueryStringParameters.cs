@@ -7,5 +7,5 @@ public class UserTreeNodeDeleteQueryStringParameters
     [Required]
     public string treeName { get; set; }
     [Required]
-    public Guid nodeId { get; set; }
+    public int nodeId { get; set; }
 }

@@ -39,7 +39,7 @@ namespace Data.Controllers
             return result;
         }
 
-        private async Task<List<UserTree>> getChilder(Guid parantId)
+        private async Task<List<UserTree>> getChilder(int parantId)
         {
             var childNodes = _dbContext.TreeNodes.AsNoTracking().Where(x => x.ParentNodeId == parantId).ToList();
             if (childNodes == null) { return new List<UserTree>(); }

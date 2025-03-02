@@ -8,7 +8,7 @@ public class UserTreeNodeCreateQueryStringParameters
     [Required]
     public string treeName { get; set; }
     [Required]
-    public Guid parentNodeId { get; set; }
+    public int parentNodeId { get; set; }
     [Required]
     public string nodeName { get; set; }
 
