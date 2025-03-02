@@ -13,7 +13,6 @@ public class JournalMessageConfiguration : IEntityTypeConfiguration<journal_mess
         builder.Property(x => x.Id).HasColumnName("id");
         builder.Property(x => x.EventId).HasColumnName("event_id");
         builder.Property(x => x.Type).HasColumnName("type");
-        builder.Property(x => x.Data).HasColumnName("data");
 
         builder.HasOne(x => x.JournalEvent)
             .WithOne(x => x.Message)

@@ -37,7 +37,14 @@ namespace Data.Controllers
             IQueryable<MJournal> source = dtos
                 .Where(x =>
                     (x.JournalEvent.Created > bargs.filter.from || x.JournalEvent.Created <= bargs.filter.to) &&
-                    x.Data.ToLower().Contains(bargs.filter.SearchText.ToLower())
+                    (
+                        x.JournalEvent.Path.ToLower().Contains(bargs.filter.SearchText.ToLower()) ||
+                        x.JournalEvent.RequestQuery.ToLower().Contains(bargs.filter.SearchText.ToLower()) ||
+                        x.JournalEvent.RequestBody.ToLower().Contains(bargs.filter.SearchText.ToLower()) ||
+                        x.JournalEvent.Exception.ToLower().Contains(bargs.filter.SearchText.ToLower()) ||
+                        x.JournalEvent.ExceptionMessage.ToLower().Contains(bargs.filter.SearchText.ToLower()) ||
+                        x.JournalEvent.ExceptionStackTrace.ToLower().Contains(bargs.filter.SearchText.ToLower())
+                    )
                 )
                 .Select(x => new MJournal()
                 {
@@ -58,14 +65,27 @@ namespace Data.Controllers
         [HttpPost("/api.user.journal.getSingle")]
         public async Task<MJournalInfo> getSingle([FromQuery] UserJournalGetSingleQueryStringParameters qargs)
         {
-            var doc = await _dbContext.JournalMessages.Include(x => x.JournalEvent).FirstOrDefaultAsync(x => x.Id == qargs.id);
-            if (doc == null) throw new SecureException(UserJournalErrors.MessageNotFound);
+            var journalMessage = await _dbContext.JournalMessages.Include(x => x.JournalEvent).FirstOrDefaultAsync(x => x.Id == qargs.id);
+            if (journalMessage == null) throw new SecureException(UserJournalErrors.MessageNotFound);
+
+            var data = new List<string>
+            {
+                $"Request ID = {journalMessage.EventId}",
+                $"Path = {journalMessage.JournalEvent.Path}",
+                $"{journalMessage.JournalEvent.RequestQuery}",
+                $"{journalMessage.JournalEvent.RequestBody}",
+                $"{journalMessage.JournalEvent.Exception}: {journalMessage.JournalEvent.ExceptionMessage}",
+                $"{journalMessage.JournalEvent.ExceptionStackTrace}"
+            };
+
+            var text = string.Join("\r\n", data);
+
             return new MJournalInfo()
             {
-                Id = doc.Id,
-                CreatedAt = doc.JournalEvent.Created,
-                EventId = doc.EventId,
-                Text = doc.Data,
+                Id = journalMessage.Id,
+                CreatedAt = journalMessage.JournalEvent.Created,
+                EventId = journalMessage.EventId,
+                Text = text,
             };
         }
     }

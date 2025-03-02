@@ -28,6 +28,12 @@ public class ExceptionHandlingMiddleware
             var journal_event = new journal_event()
             {
                 Created = DateTime.UtcNow,
+                Path = $"{context.Request.Path}",
+                RequestQuery = getQuery(context),
+                RequestBody = getBody(context),
+                Exception = exception.GetType().FullName,
+                ExceptionMessage = exception.Message,
+                ExceptionStackTrace = exception.StackTrace
             };
             var r = await dbContext.JournalEvents.AddAsync(journal_event);
             await dbContext.SaveChangesAsync();
@@ -36,25 +42,6 @@ public class ExceptionHandlingMiddleware
                 EventId = r.Entity.Id,
                 Type = exception is SecureException ? "Secure" : exception.GetType().FullName
             };
-            var data = new List<string>();
-            data.Add($"Path = {context.Request.Path}");
-            foreach (var item in context.Request.Query.Keys)
-            {
-                data.Add($"{item} = {context.Request.Query[item]}");
-            }
-
-            try
-            {
-                context.Request.Body.Seek(0, SeekOrigin.Begin);
-                using StreamReader stream = new(context.Request.Body);
-                string body = stream.ReadToEnd();
-                data.Add($"{body}");
-            }
-            catch { }
-            data.Add($"{exception.GetType().FullName}: {exception.Message}");
-            data.Add(exception.StackTrace);
-
-            journal_message.Data = string.Join("\r\n", data);
             await dbContext.AddAsync(journal_message);
             await dbContext.SaveChangesAsync();
 
@@ -67,5 +54,27 @@ public class ExceptionHandlingMiddleware
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             await context.Response.WriteAsJsonAsync(problemDetails);
         }
+    }
+
+    private static string getQuery(HttpContext context)
+    {
+        var data = new List<string>();
+        foreach (var item in context.Request.Query.Keys)
+        {
+            data.Add($"{item} = {context.Request.Query[item]}");
+        }
+        return string.Join("\r\n", data.ToArray());
+    }
+    private static string getBody(HttpContext context)
+    {
+        try
+        {
+            context.Request.Body.Seek(0, SeekOrigin.Begin);
+            using StreamReader stream = new(context.Request.Body);
+            string body = stream.ReadToEnd();
+            return body;
+        }
+        catch { }
+        return "";
     }
 }
